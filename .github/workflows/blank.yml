@@ -1,0 +1,37 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Unzip project
+        run: unzip -q -o football-millionaire.zip
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        working-directory: football-millionaire
+        run: npm install
+
+      - name: Copy Arabic font
+        working-directory: football-millionaire
+        run: |
+          mkdir -p www/fonts
+          cp node_module
